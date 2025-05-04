@@ -1,0 +1,13 @@
+selenium==4.31.0
+webdriver_manager
+ipykernel==6.29.5
+webdriver-manager
+fake_useragent
+undetected_chromedriver
+numpy
+pandas
+bs4
+tqdm
+ast
+requests
+bs4
