@@ -16,16 +16,16 @@ it-job-trend-analyzer/
 │
 ├── 📁 src/                       # Source code chính
 │   ├── crawling/                # Giai đoạn 1: Cào dữ liệu HTML
-│   │   └── crawl_jobs.py
+│   │   └── crawl_jobs.ipynb
 │   ├── scraping/                # Giai đoạn 2: Trích xuất thông tin
-│   │   └── scrape_info.py
+│   │   └── scrape_info.ipynb
 │   ├── preprocessing/           # Giai đoạn 3: Chuẩn hóa bằng LLM
-│   │   └── standardize_llm.py
+│   │   └── standardize_llm.ipynb
 │   ├── recommender/             # Module đề xuất công việc dựa vào CV
-│   │   ├── job_matcher.py
-│   │   └── resume_parser.py
+│   │   ├── job_matcher.ipynb
+│   │   └── resume_parser.ipynb
 │   └── utils/                   # Hàm dùng chung
-│       └── logger.py
+│       └── logger.ipynb
 │
 ├── 📁 models/                    # Lưu các mô hình đã huấn luyện hoặc checkpoint
 │   └── job_matching_model.pkl
@@ -37,7 +37,7 @@ it-job-trend-analyzer/
 │   └── settings.yaml
 │
 ├── 📁 tests/                     # Unit tests
-│   └── test_scraper.py
+│   └── test_scraper.ipynb
 │
 ├── requirements.txt             # Các thư viện cần thiết
 ├── README.md                    # Giới thiệu dự án
