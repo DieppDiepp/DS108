@@ -82,9 +82,16 @@ llm = ChatTogether(
 )
 logger.info(f"Đã khởi tạo LLM với model: {DEFAULT_MODEL_NAME}")
 
-MODEL_CACHE_DIR = "/opt/render/project/src/.cache/huggingface/hub"
-embedding_model = SentenceTransformer('sentence-transformers/paraphrase-mpnet-base-v2', cache_folder=MODEL_CACHE_DIR)
+MODEL_CACHE_DIR = "/app/model_cache"
+
+logger.info("Bắt đầu khởi tạo SentenceTransformer model.")
+
+# Khởi tạo model mà KHÔNG TRUYỀN cache_folder trực tiếp.
+# Model sẽ tự động tìm biến môi trường TRANSFORMERS_CACHE (đã đặt trong Dockerfile)
+# để quyết định nơi lưu/đọc cache.
+embedding_model = SentenceTransformer('sentence-transformers/paraphrase-mpnet-base-v2')
 logger.info("Đã khởi tạo SentenceTransformer model.")
+
 
 # --- Các Prompts (KHÔNG THAY ĐỔI LOGIC) ---
 prompt_system_description = """
@@ -161,28 +168,20 @@ Strong analytical thinking, problem-solving skills, and ability to work effectiv
 
 prompt_system_reranking_feature = """
 You are a recruiter specializing in reading CVs. I will provide you with a piece of text extracted from a candidate’s CV. From that, I need you to extract the following attributes, and you must strictly follow the exact output requirements stated below.
-
 province: Return the name of the province in Vietnam where the candidate currently lives, in Vietnamese. For example: "Hà Nội", "Hồ Chí Minh", …
-
 language: Return the languages the candidate is proficient in. Extract this as a list of languages based on both their current country of residence and any languages explicitly mentioned in the CV. For example: [“tiếng Việt”, “tiếng Anh”, "tiếng Pháp”, “tiếng Trung”,….]
-
 job_type: Extract the type of job the candidate is looking for, if mentioned. You must return one of the following values:
 "Toàn thời gian”, "Thực tập", "Bán thời gian”, "Làm tại nhà", "Thời vụ”. If no suitable value is found, return “”.
-
 academic_level: Extract the candidate’s education level and return one of the following exact values:
 "Đại Học trở lên”, "Cao Đẳng trở lên”,
 "Trung học phổ thông (Cấp 3) trở lên”,
 "Cao học trở lên”, "Trung cấp trở lên”.
 For example, if the candidate has a university degree, return "Đại Học trở lên”. If no suitable value is found, return “”.
-
 experience_years: Based on the number of years of working experience, return the value in the format: number + "năm”.
 For example, if they have 2 years of experience, return “2 năm”. If they are a recent graduate or have no experience, return "Không yêu cầu”.
-
 role: Based on the role the candidate is applying for in the CV, return that role in English, such as “Data Engineer”, “Data Scientist”, “Software Engineer”,…
-
 tech_stack: Extract the tech stacks the candidate is familiar with and return them as an uppercase list of strings. For example:
 ["WEB", "HTTP", "CORS", "SELENIUM", "CUCUMBER", "BEHAVE", "CI/CD", "AZURE DEVOPS", "GITHUB ACTIONS", "GITLAB", "PYTEST", "TESTNG", "KUBERNETES", "LOCUST", "METASPLOIT", "LINUX", "AWS", "AZURE", "SQL", "GRAFANA", "OPENTELEMETRY", "PROMETHEUS", "SPLUNK", "JAEGER", "ZIPKIN", "ELASTIC", "AWS X-RAY", "PYTHON", "JS", "GO", "SQL"]
-
 You must return the output strictly in **valid JSON format only**, with the keys: "province", "language", "job_type", "academic_level", "experience_years", "role", and "tech_stack". Do not include any extra explanations or descriptions.
 """
 
@@ -345,10 +344,8 @@ def calculate_reranking_scores(df_rerank: pd.DataFrame, feature_rerank_dict: dic
 def recommend_jobs_from_cv(cv_file_bytes: bytes):
     """
     Thực hiện toàn bộ quy trình từ trích xuất CV đến đề xuất công việc.
-
     Args:
         cv_file_bytes (bytes): Nội dung file PDF của CV dưới dạng bytes.
-
     Returns:
         str: Chuỗi JSON chứa danh sách các công việc được đề xuất.
     """
@@ -517,7 +514,11 @@ app = FastAPI(
     version="1.0.0",
 )
 
+@app.get("/health")
+async def health_check():
+    return {"status": "ok", "message": "API is healthy and running!"}
 # Endpoint để kiểm tra trạng thái API
+
 @app.get("/")
 async def root():
     return {"message": "Job Recommendation API is running!"}
