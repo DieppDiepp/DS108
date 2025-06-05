@@ -1,0 +1,41 @@
+Sub ExportSheetsToUTF8CSV()
+    Dim ws As Worksheet
+    Dim folderPath As String
+    Dim fso As Object, stream As Object
+    Dim lastRow As Long, lastCol As Long
+    Dim rowNum As Long, colNum As Long
+    Dim csvLine As String
+
+    ' --- Chọn thư mục lưu file ---
+    With Application.FileDialog(msoFileDialogFolderPicker)
+        .Title = "Chọn thư mục để lưu file CSV"
+        If .Show <> -1 Then Exit Sub
+        folderPath = .SelectedItems(1) & "\"
+    End With
+
+    ' --- Lặp qua từng sheet cần export ---
+    For Each ws In ThisWorkbook.Sheets
+        If ws.Visible = xlSheetVisible Then
+            ' Tạo FileSystemObject và UTF-8 Stream
+            Set fso = CreateObject("Scripting.FileSystemObject")
+            Set stream = fso.CreateTextFile(folderPath & ws.Name & ".csv", True, True) ' True=True = UTF-8 BOM
+
+            lastRow = ws.Cells(ws.Rows.Count, 1).End(xlUp).Row
+            lastCol = ws.Cells(1, ws.Columns.Count).End(xlToLeft).Column
+
+            ' Ghi từng dòng
+            For rowNum = 1 To lastRow
+                csvLine = ""
+                For colNum = 1 To lastCol
+                    csvLine = csvLine & """" & Replace(ws.Cells(rowNum, colNum).Text, """", """") & """"
+                    If colNum < lastCol Then csvLine = csvLine & ","
+                Next colNum
+                stream.WriteLine csvLine
+            Next rowNum
+
+            stream.Close
+        End If
+    Next ws
+
+    MsgBox "Đã xuất tất cả sheet ra CSV với UTF-8 BOM", vbInformation
+End Sub
