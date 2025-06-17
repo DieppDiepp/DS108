@@ -1,6 +1,6 @@
 # DS108 - Tiền Xử Lý Và Xây Dựng Bộ Dữ Liệu
 
-![Reason for Project](it-job-trend-analyzer/LyDoThucHienDeTai.png)
+![Reason for Project](it-job-trend-analyzer/LyDoThucHienDeTa.png)
 
 ![Reason for Project](it-job-trend-analyzer/LyDoThucHienDeTai2.png)
 
