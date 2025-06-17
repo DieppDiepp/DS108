@@ -13,38 +13,23 @@ it-job-trend-analyzer/
 ├── 📁 data/                       # Lưu trữ dữ liệu raw và processed
 │   ├── raw_html/                 # HTML cào được từ các trang tuyển dụng (Giai đoạn 1)
 │   ├── scraped_data/            # Dữ liệu JSON/CSV sau khi scrape (Giai đoạn 2)
-│   └── standardized_data/       # Dữ liệu đã chuẩn hóa từ LLM (Giai đoạn 3)
-│
-├── 📁 notebooks/                 # Notebook Jupyter cho EDA, prototyping
-│   ├── eda.ipynb
-│   └── llm_data_cleaning.ipynb
+│   └── standardized_data/       # Dữ liệu đã chuẩn hóa (1NF, 3NF, Star Schema)
 │
 ├── 📁 src/                       # Source code chính
+│   ├── analysis_data/           # Phân tích dữ liệu, trực quan hóa bằng PowerBI & xử lý SQL
+│   │   ├── powerBI_visualization/
+│   │   └── sql_sever_pre_processing/
 │   ├── crawling/                # Giai đoạn 1: Cào dữ liệu HTML
-│   │   └── crawl_jobs.ipynb
-│   ├── scraping/                # Giai đoạn 2: Trích xuất thông tin
-│   │   └── scrape_info.ipynb
-│   ├── preprocessing/           # Giai đoạn 3: Chuẩn hóa bằng LLM
-│   │   └── standardize_llm.ipynb
-│   ├── recommender/             # Module đề xuất công việc dựa vào CV
-│   │   ├── job_matcher.ipynb
-│   │   └── resume_parser.ipynb
-│   └── utils/                   # Hàm dùng chung
-│       └── logger.ipynb
+│   ├── scraping/                # Giai đoạn 2: Trích xuất thông tin từ HTML
+│   ├── preprocessing/           # Giai đoạn 3: Chuẩn hóa dữ liệu bằng API LLM và tiến hành tạo Sliver data 
+│   └── recommender/             # Module đề xuất việc làm từ CV
+│       ├── ETL_pipeline/
+│       ├── backend/
+│       └── frontend/
 │
-├── 📁 models/                    # Lưu các mô hình đã huấn luyện hoặc checkpoint
-│   └── job_matching_model.pkl
+├── 📁 cv_samples/                # Một số CV mẫu để test hệ thống (ẩn nội dung chi tiết)
 │
-├── 📁 cv_samples/                # Một số CV mẫu để test
-│   └── cv1.pdf
-│
-├── 📁 config/                    # File config cho pipeline hoặc model
-│   └── settings.yaml
-│
-├── 📁 tests/                     # Unit tests
-│   └── test_scraper.ipynb
-│
-├── requirements.txt             # Các thư viện cần thiết
 ├── README.md                    # Giới thiệu dự án
-└── .gitignore                   # Bỏ qua file không cần track
+├── Slide_Report_Final_Project.pdf # Slide báo cáo tổng kết
+
 ```
