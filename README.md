@@ -21,7 +21,7 @@ it-job-trend-analyzer/
 │   │   └── sql_sever_pre_processing/
 │   ├── crawling/                # Giai đoạn 1: Cào dữ liệu HTML
 │   ├── scraping/                # Giai đoạn 2: Trích xuất thông tin từ HTML
-│   ├── preprocessing/           # Giai đoạn 3: Chuẩn hóa dữ liệu bằng API LLM và tiến hành tạo Sliver data 
+│   ├── preprocessing/           # Giai đoạn 3: Trích suất thông tin bằng API và tiền xử lý chuẩn hóa dữ liệu
 │   └── recommender/             # Module đề xuất việc làm từ CV
 │       ├── ETL_pipeline/
 │       ├── backend/
